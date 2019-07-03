@@ -10,11 +10,11 @@ import torchvision.transforms as tr
 import matplotlib.pyplot as plt
 
 #These are hyperparameters.
-learning_rate = 0.01
+learning_rate = 0.02
 loss_function = nn.MSELoss() #(Mean Squared Error)
 batch_size_training = 100
 batch_size_test = 100
-epochs = 3
+epochs = 9
 
 #This transform will convert the MNIST data to a tensor, then normalize it.
 mnist_transform = tr.Compose([tr.ToTensor(),
