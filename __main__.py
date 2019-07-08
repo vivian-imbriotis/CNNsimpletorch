@@ -22,10 +22,10 @@ mnist_transform = tr.Compose([tr.ToTensor(),
                               ])
 
 #Here we define the datasets, one for testing and one for training.
-mnist_traindata = datasets.MNIST(root="./data", train=True, download=True,
+mnist_traindata = datasets.MNIST(root="data", train=True, download=True,
                                 transform=mnist_transform)
 
-mnist_testdata = datasets.MNIST(root="./data", train=False, download = True,
+mnist_testdata = datasets.MNIST(root="data", train=False, download = True,
                                 transform=mnist_transform)
 
 #DataLoaders are objects we can iterate over to obtain batches of data
@@ -154,17 +154,17 @@ class Net(nn.Module):
                     self.fail += 1
         for f in self.parameters():
             f.data.sub_(f.grad.data*learning_rate)
-    def train_epoch(self,loader):
+    def train_epoch(self,loader,epoch):
         for batch_idx, (data, targets) in enumerate(train_loader):
             self.train_cycle(data, targets)
             if batch_idx%20 == 0:
                 net.log()
-    def log(self):
+    def log(self, epoch):
         try:
             percent = (100*self.success/(self.fail+self.success))
         except ZeroDivisionError:
             percent = 0
-        print("Accuracy: %.2f%%" %(percent))
+        print("\bAccurately identified on last : %.2f%%, epoch: %d" %(percent))
         self.accuracies.append(percent)
 
 
@@ -173,7 +173,7 @@ class Net(nn.Module):
 
 net = Net()
 for i in range(epochs):
-        net.train_epoch(train_loader)
+        net.train_epoch(train_loader,i)
         
 #After training, we can plot the accuracy of the network
 plt.plot(net.accuracies)
